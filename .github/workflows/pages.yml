@@ -20,7 +20,7 @@ jobs:
     - name: Run build script
       run: npm run build
     - name: Tar files
-      run: tar --dereference --hard-dereference -cvf artifact.tar dist
+      run: tar --dereference --hard-dereference --directory dist -cvf artifact.tar .
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
