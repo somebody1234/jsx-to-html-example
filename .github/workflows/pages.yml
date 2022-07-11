@@ -3,6 +3,7 @@ on: [push]
 jobs:
   pages:
     permissions:
+      pages: 'write'
       id-token: 'write'
     runs-on: ubuntu-latest
     steps:
