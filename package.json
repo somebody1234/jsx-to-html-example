@@ -1,0 +1,21 @@
+{
+  "name": "ssg-example",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "somebody1234 <ehern.lee@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "esbuild": "^0.14.49",
+    "jsdom": "^20.0.0"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^16.2.14",
+    "@types/node": "^18.0.3"
+  }
+}
