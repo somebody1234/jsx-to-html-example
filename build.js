@@ -4,11 +4,12 @@ import * as path from 'path';
 import esbuild from 'esbuild';
 import { JSDOM } from 'jsdom';
 
+await fs.rm('dist', { recursive: true, force: true });
+
 /** @param {string} path_ @returns {AsyncGenerator<string>} */
 async function *walkDir(path_) {
   for (const file of await fs.readdir(path_, { withFileTypes: true })) {
     const full = path.join(path_, file.name);
-    console.log(full);
     if (file.isDirectory()) {
       yield *walkDir(full);
     } else {
@@ -38,7 +39,6 @@ for await (const path_ of walkDir('src')) {
   }
 }
 
-console.log(transpileDir);
 await esbuild.build({ entryPoints: files, outbase: 'src', outdir: transpileDir, jsxFactory: 'globalThis.document.createElement' });
 
 /** @param {Document} document */
@@ -66,13 +66,11 @@ function patchCreateElement(document) {
 for await (const path_ of walkDir(transpileDir)) {
   const ext = path.extname(path_);
   const dest_ = path.relative(transpileDir, path_);
-  const dest = path.join('dist', dest_.slice(0, dest_.length - ext.length) + '.html');
+  if (dest_ === 'package.json') {
+    continue;
+  }
+  const dest = path.join('dist', dest_.slice(0, dest_.length - ext.length) + (ext === '.js' ? '.html' : ext));
   switch (ext) {
-    case '.html': {
-      await fs.mkdir(path.dirname(dest), { recursive: true });
-      await fs.copyFile(path_, dest);
-      break;
-    }
     case '.js': {
       const page = new JSDOM();
       // @ts-ignore
@@ -83,6 +81,11 @@ for await (const path_ of walkDir(transpileDir)) {
         await fs.mkdir(path.dirname(dest), { recursive: true });
         await fs.writeFile(dest, '<!DOCTYPE html>' + module.default.outerHTML);
       }
+      break;
+    }
+    default: {
+      await fs.mkdir(path.dirname(dest), { recursive: true });
+      await fs.copyFile(path_, dest);
       break;
     }
   }

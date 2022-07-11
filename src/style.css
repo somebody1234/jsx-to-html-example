@@ -1,0 +1,17 @@
+:root {
+  --primary: white;
+  --primary-background: #222;
+}
+
+body {
+  color: var(--primary);
+  background: var(--primary-background);
+}
+
+a {
+  color: #5fb1f5;
+}
+
+a:visited {
+  color: #9bd2ff;
+}

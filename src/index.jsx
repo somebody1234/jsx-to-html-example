@@ -29,9 +29,10 @@ function stdoutOf(proc) {
 }
 
 export default <Page title="this is a document">
+  <link rel="stylesheet" href="style.css" />
   <h1 style="color: #bbb">This webpage was made in JSX</h1>
   <p><i>Here is some <b>test</b> <span style="color: red">for<span style="color: green">mat</span>ting</span>.</i></p>
-  <p>HTML files like <a href="untouched.html">this one</a> are copied directly to the output.</p>
+  <p>Non-JS/JSX/TS/TSX files like <a href="untouched.html">this one</a> are copied directly to the output.</p>
   <p>You can include JSX files...</p>
   {(await import('./included.js')).included}
   <p>... and HTML files...</p>

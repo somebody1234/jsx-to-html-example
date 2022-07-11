@@ -8,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -21,17 +20,11 @@ jobs:
     - name: Run build script
       run: npm run build
     - name: Tar files
-      run: tar -cvf artifact.tar dist
+      run: tar --dereference --hard-dereference -cvf artifact.tar dist
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
         name: github-pages
         path: artifact.tar
-    - name: Check out deploy action
-      uses: actions/checkout@v3
-      with:
-        repository: actions/deploy-pages
-        ref: v1.0.6
-        path: ./.github/actions/deploy-pages
     - name: Deploy Pages
-      uses: ./.github/actions/deploy-pages
+      uses: actions/deploy-pages@v1-beta
